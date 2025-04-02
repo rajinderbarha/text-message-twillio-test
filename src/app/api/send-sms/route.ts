@@ -46,8 +46,14 @@ export async function POST(req: NextRequest) {
     console.log("Messages sent successfully.");
     return NextResponse.json({ success: true, message: "Messages sent successfully!" }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) { 
     console.error("Error sending messages:", error);
-    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
+
+    let errorMessage = "Internal Server Error";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
