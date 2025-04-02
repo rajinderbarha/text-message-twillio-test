@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import twilio from "twilio";
 
-interface Data {
-  success?: boolean;
-  message?: string;
-  error?: string;
-}
+// interface Data {
+//   success?: boolean;
+//   message?: string;
+//   error?: string;
+// }
 
 export async function POST(req: NextRequest) {
   console.log("Received request:", req.method); // Debugging log
