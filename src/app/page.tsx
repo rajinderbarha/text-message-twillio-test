@@ -12,6 +12,7 @@ const Home = () => {
   // Validate phone number (basic check for numbers only)
   const isValidPhoneNumber = (num: string) => /^[\d+\s-]+$/.test(num.trim());
 
+
   const addNumber = () => {
     setError(""); // Reset error message
 
@@ -32,6 +33,10 @@ const Home = () => {
 
     setNumbers((prev) => [...prev, phoneInput.trim()]);
     setPhoneInput("");
+  };
+
+  const removeNumber = (index: number) => {
+    setNumbers((prev) => prev.filter((_, i) => i !== index));
   };
 
   const sendMessage = async () => {
@@ -96,7 +101,7 @@ const Home = () => {
       </div>
 
       {/* Display Added Numbers */}
-      {numbers.length > 0 && (
+      {/* {numbers.length > 0 && (
         <ul className="mb-4">
           {numbers.map((num, index) => (
             <li key={index} className="bg-gray-100 p-2 my-1 rounded">
@@ -104,7 +109,25 @@ const Home = () => {
             </li>
           ))}
         </ul>
+      )} */}
+      {/* Display Added Numbers */}
+
+      {numbers.length > 0 && (
+        <ul className="mb-4">
+          {numbers.map((num, index) => (
+            <li key={index} className="bg-gray-100 p-2 my-1 rounded flex justify-between items-center">
+              <span>{num}</span>
+              <button
+                onClick={() => removeNumber(index)}
+                className="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded"
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
+
 
       {/* Message Input */}
       <textarea
