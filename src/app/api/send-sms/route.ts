@@ -11,16 +11,16 @@ export async function POST(req: NextRequest) {
   console.log("Received request:", req.method); // Debugging log
 
   try {
-    const { numbers, message } = await req.json(); // Read JSON from request body
+    const { senderNumber, numbers, message } = await req.json(); // Read JSON from request body
 
     // Basic validation
-    if (!numbers || !message || !Array.isArray(numbers) || numbers.length === 0) {
+    if (!numbers || !message || !Array.isArray(numbers) || numbers.length === 0 || !senderNumber) {
       console.error("Validation Error: Missing numbers or message.");
       return NextResponse.json({ error: "Numbers (array) and message are required." }, { status: 400 });
     }
 
     // Check if Twilio credentials are configured
-    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE_NUMBER) {
+    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !senderNumber) {
       console.error("Twilio configuration missing. Check environment variables.");
       return NextResponse.json({ error: "Server misconfiguration. Contact support." }, { status: 500 });
     }
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       console.log(`Sending SMS to: ${number}`); // Debugging log
       return client.messages.create({
         body: message,
-        from: process.env.TWILIO_PHONE_NUMBER,
+        from: senderNumber,
         to: number,
       });
     });
